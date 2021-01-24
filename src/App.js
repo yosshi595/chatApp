@@ -10,7 +10,6 @@ import {
 import { Chat } from "./style";
 import { AuthProvider } from "./AuthService";
 import LoggedInRoute from './LoggedInRoute';
-// import SignUpRoute from './SignUpRoute';
 
 const App = () => {
   return (

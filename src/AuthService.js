@@ -6,12 +6,11 @@ const AuthContext = React.createContext();
 
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null)
-  //レンダーし終わった後に、実行したい処理をuseEffectの「中」に書く。
-  //useEffectは非同期処理と同じなのか?
-  //ライフサイクル?
   useEffect(() => {
+    //onAuthStateChangedメッソドは、ユーザーのログイン状態が変わるたびに呼び出される。
+    //firebaseから、ユーザーの情報を取り出している。
     firebase.auth().onAuthStateChanged(user => {
-      // console.log(user)
+      // console.log(user.displayName)
       setUser(user)
     })
   }, [])

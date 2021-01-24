@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import { Redirect, Route } from "react-router-dom";
 import { AuthContext } from "./AuthService";
 
+//このコンポーネントはroomのページに行ったときにuserがいたらroomに行き、userがいなかったら、loginにリダイレクトするコンポーネント。
 const LoggedInRoute = ({ component: Component, ...rest }) => {
   // console.log(rest)
 
@@ -12,10 +13,9 @@ const LoggedInRoute = ({ component: Component, ...rest }) => {
     //ログインされていたら、受け取ったコンポーネントを表示
     //ログインされていなければ、ログインページにリダイレクト
     <Route
-    {...rest} //restを展開する意味は何なのか?
-    //このpropsは何なのか?何のために引数で受け取っているのか?
+    {...rest} //このrestはpathなどの情報が入っている
+    //このpropsはhistoryなどのページ一つ一つにある情報
     render = {props => user ? (
-      //propsを展開する意味が分からなかった。
       <Component {...props} />
       // console.log(props)
       ) : (

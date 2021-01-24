@@ -39,4 +39,3 @@ export const Btn = styled.button`
   padding: 8px 15px;
   cursor: pointer;
 `
-

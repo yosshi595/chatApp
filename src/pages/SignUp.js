@@ -1,27 +1,22 @@
 import React, { useState } from "react";
-// import { Redirect } from "react-router-dom";
-// import { AuthContext } from "../AuthService";
+import { Link } from "react-router-dom";
 import firebase from '../config/firebase';
 import { Title } from "../style";
 import { FormStyle } from "../style";
 import { Lavel } from "../style";
 import { Input } from "../style";
 import { Btn } from "../style";
+import '../style.css';
 
 const SignUp = ({ history }) => {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  // const [name, setName] = useState('');
-
-  // const user = useContext(AuthContext);
-
-
-
+  const [name, setName] = useState('');
 
   //ログインの機能と同じような機能を作る
 
-
+  //この実装は、初めにuserがいたらroomにリダイレクトされているし、いなかったらloginにリダイレクトされているのでsignUpページにuserがいることはない。
   // if (user) {
   //   <Redirect to='/' />
   // }
@@ -30,22 +25,21 @@ const SignUp = ({ history }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     firebase.auth().createUserWithEmailAndPassword(email, password)
-      .then(user => {
-        //うまく実行されない。
-        history.push('/login')
+      .then(({ user }) => {
+        history.push('/')
         // console.log(user)
+        user.updateProfile({
+          displayName: name
+        })
       })
       .catch(error => {
-        alert(error)
+        if (error.code === 'auth/email-already-in-use') {
+          alert('このメールアドレスは他のアカウントで使用されています。')
+        } else if (error.code === 'auth/weak-password') {
+          alert('パスワードは6文字以上です。')
+        }
+        // console.log(error)
       });
-
-    // if (!email.trim('')) {
-    //   alert('Please your e-mail')
-    // } else if (!password.trim('')) {
-    //   alert('Please your password')
-    // } else {
-    //   alert('New registration completed!!')
-    // }
   }
 
   return (
@@ -54,23 +48,18 @@ const SignUp = ({ history }) => {
       <FormStyle onSubmit={handleSubmit}>
         <div>
           <Lavel htmlFor="email">e-mail</Lavel>
-          <Input type="email" id="email" name="email" placeholder="email" required onChange={(e) => {
-            setEmail(e.target.value);
-          }} />
+          <Input type="email" id="email" name="email" placeholder="email" required onChange={(e) => { setEmail(e.target.value) }} />
         </div>
         <div>
           <Lavel htmlFor="password">password</Lavel>
-          <Input type="password" id="password" name="password" placeholder="password" required onChange={(e) => {
-            setPassword(e.target.value)
-          }} />
+          <Input type="password" id="password" name="password" placeholder="password" required onChange={(e) => { setPassword(e.target.value) }} />
         </div>
-        {/* <div>
-          <label htmlFor="yourName">name</label>
-          <input type="name" id="name" name="name" placeholder="name" onChange={(e) => {
-            setName(e.target.value)
-          }} />
-        </div> */}
+        <div>
+          <Lavel htmlFor="yourName">name</Lavel>
+          <Input type="name" id="yourName" name="name" placeholder="name" onChange={(e) => { setName(e.target.value) }} />
+        </div>
         <Btn type="submit">新規登録</Btn>
+        <Link className='link-btn' to='/login'>ログイン</Link>
       </FormStyle>
       {/* <a href="http://localhost:3000/login">ログイン</a> */}
     </>
