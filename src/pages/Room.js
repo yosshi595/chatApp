@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { Title } from "../style";
 import firebase from '../config/firebase'
 import { AuthContext } from "../AuthService";
+import List from "../List";
 
 const Room = () => {
 
@@ -19,6 +20,7 @@ const Room = () => {
       firebase.firestore().collection('messages').add({
         content: value,
         user: user.displayName,
+        //このfirebaseの機能は、ドキュメントのフィールドに、サーバーが更新を受信した時刻を追跡するサーバーのこと
         created: firebase.firestore.FieldValue.serverTimestamp()
       })
     }
@@ -27,11 +29,16 @@ const Room = () => {
 
   useEffect(() => {
     //orderByは降順がdesk,昇順がascを決めるときに使う
+    //このfirebaseのfirestoreのorderBy()機能は、デフォルトでは、クエリを満たすすべてのドキュメントが、ドキュメント ID の昇順で取得される。
     firebase.firestore().collection('messages').orderBy('created')
+    //snapshotは、collectionなのか！
       .onSnapshot((snapshot) => {
+        //このdocはdocumentの1つ1つの要素
         console.log(snapshot.docs.map(doc => doc.data()))
-        // console.log(array)
-        setMessages(snapshot.docs.map(doc => { return { data: doc.data(), id: doc.id } }))
+        //このid: doc.idはどこから作られてきたのか。
+        setMessages(snapshot.docs.map(doc => 
+          { return { data: doc.data(), id: doc.id } }
+          ))
       })
     // console.log(messages)
   }, [])
@@ -44,9 +51,10 @@ const Room = () => {
           messages.map(message => {
             return (
               //このli別のコンポーネントで作る。
-              <li key={messages.id}>
-                {message.data.user} : {message.data.content}
-              </li>
+              // <li key={messages.id}>
+              //   {message.data.user} : {message.data.content}
+              // </li>
+              <List key={message.id} data={message.data.user} content={message.data.content} />
             )
           })
         }

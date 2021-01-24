@@ -32,11 +32,14 @@ const Login = ({ history }) => {
       })
       .catch(error => {
         if (error.code === 'auth/wrong-password') {
-          alert('パスワードが間違っています。')
+          // alert('パスワードが間違っています。')
+          document.getElementById('loginPasswordEr').textContent = 'パスワードが間違っています。'
         } else if (error.code === 'auth/too-many-requests') {
-          alert('このアカウントへのアクセスは一時的に無効にされています。パスワードを設定するか、後でもう一度試してください。')
+          // alert('このアカウントへのアクセスは一時的に無効にされています。パスワードを設定するか、後でもう一度試してください。')
+          document.getElementById('loginEmailEr').textContent = 'このアカウントへのアクセスは一時的に無効にされています。パスワードを設定するか、後でもう一度試してください。'
         } else if (error.code === 'auth/user-not-found') {
-          alert('メールアドレスが間違っています。')
+          // alert('メールアドレスが間違っています。')
+          document.getElementById('loginEmailEr').textContent = 'メールアドレスが間違っています。'
         }
         // alert(error)
         // console.log(history)
@@ -51,10 +54,12 @@ const Login = ({ history }) => {
         <div>
           <Lavel htmlFor="email">e-mail</Lavel>
           <Input type="email" name="email" id="email" placeholder="email" required onChange={(e) => setEmail(e.target.value)} />
+          <p id='loginEmailEr'></p>
         </div>
         <div>
           <Lavel htmlFor="password">password</Lavel>
           <Input type="password" name="password" id="password" placeholder="password" required onChange={(e) => setPassword(e.target.value)} />
+          <p id='loginPasswordEr'></p>
         </div>
         <Btn type="submit">ログイン</Btn>
         <Link className='link-btn' to='/signup'>新規登録</Link>

@@ -14,7 +14,6 @@ const SignUp = ({ history }) => {
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
 
-  //ログインの機能と同じような機能を作る
 
   //この実装は、初めにuserがいたらroomにリダイレクトされているし、いなかったらloginにリダイレクトされているのでsignUpページにuserがいることはない。
   // if (user) {
@@ -34,9 +33,11 @@ const SignUp = ({ history }) => {
       })
       .catch(error => {
         if (error.code === 'auth/email-already-in-use') {
-          alert('このメールアドレスは他のアカウントで使用されています。')
+          // alert('このメールアドレスは他のアカウントで使用されています。')
+          document.getElementById('signEmailEr').textContent = 'このメールアドレスは他のアカウントで使用されています。'
         } else if (error.code === 'auth/weak-password') {
-          alert('パスワードは6文字以上です。')
+          // alert('パスワードは6文字以上です。')
+          document.getElementById('signPasswordEr').textContent = 'パスワードは6文字以上です。'
         }
         // console.log(error)
       });
@@ -49,10 +50,12 @@ const SignUp = ({ history }) => {
         <div>
           <Lavel htmlFor="email">e-mail</Lavel>
           <Input type="email" id="email" name="email" placeholder="email" required onChange={(e) => { setEmail(e.target.value) }} />
+          <p id='signEmailEr'></p>
         </div>
         <div>
           <Lavel htmlFor="password">password</Lavel>
           <Input type="password" id="password" name="password" placeholder="password" required onChange={(e) => { setPassword(e.target.value) }} />
+          <p id='signPasswordEr'></p>
         </div>
         <div>
           <Lavel htmlFor="yourName">name</Lavel>
