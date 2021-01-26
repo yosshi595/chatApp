@@ -1,11 +1,11 @@
 import React from "react";
 
-const List = ({ data, content }) => {
+const List = ({ name, content }) => {
   return (
     <li>
-      {data} : {content}
+      {name} : {content}
     </li>
   )
 }
 
-export default List
+export default List;

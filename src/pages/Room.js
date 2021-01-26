@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Title } from "../style";
-import firebase from '../config/firebase'
+import firebase from '../config/firebase';
 import { AuthContext } from "../AuthService";
 import List from "../List";
 
@@ -22,10 +22,10 @@ const Room = () => {
         user: user.displayName,
         //このfirebaseの機能は、ドキュメントのフィールドに、サーバーが更新を受信した時刻を追跡するサーバーのこと
         created: firebase.firestore.FieldValue.serverTimestamp()
-      })
-    }
+      });
+    };
     setValue('');
-  }
+  };
 
   useEffect(() => {
     //orderByは降順がdesk,昇順がascを決めるときに使う
@@ -34,14 +34,14 @@ const Room = () => {
     //snapshotは、collectionなのか！
       .onSnapshot((snapshot) => {
         //このdocはdocumentの1つ1つの要素
-        console.log(snapshot.docs.map(doc => doc.data()))
+        console.log(snapshot.docs.map(doc => doc.data()));
         //このid: doc.idはどこから作られてきたのか。
         setMessages(snapshot.docs.map(doc => 
           { return { data: doc.data(), id: doc.id } }
           ))
-      })
+      });
     // console.log(messages)
-  }, [])
+  }, []);
 
   return (
     <>
@@ -54,7 +54,7 @@ const Room = () => {
               // <li key={messages.id}>
               //   {message.data.user} : {message.data.content}
               // </li>
-              <List key={message.id} data={message.data.user} content={message.data.content} />
+              <List key={message.id} name={message.data.user} content={message.data.content} />
             )
           })
         }
@@ -68,4 +68,4 @@ const Room = () => {
   )
 }
 
-export default Room
+export default Room;

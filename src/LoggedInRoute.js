@@ -26,4 +26,4 @@ const LoggedInRoute = ({ component: Component, ...rest }) => {
       )
     }
 
-export default LoggedInRoute
+export default LoggedInRoute;

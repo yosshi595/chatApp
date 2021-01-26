@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import firebase from '../config/firebase';
-import { Title } from "../style";
-import { FormStyle } from "../style";
-import { Lavel } from "../style";
-import { Input } from "../style";
-import { Btn } from "../style";
+import { Title,FormStyle,Lavel,Input,Btn } from "../style";
+// import { FormStyle } from "../style";
+// import { Lavel } from "../style";
+// import { Input } from "../style";
+// import { Btn } from "../style";
 import '../style.css';
 
 const SignUp = ({ history }) => {
@@ -13,6 +13,8 @@ const SignUp = ({ history }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
+  const [emailError, setEmailError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
 
 
   //この実装は、初めにuserがいたらroomにリダイレクトされているし、いなかったらloginにリダイレクトされているのでsignUpページにuserがいることはない。
@@ -25,23 +27,23 @@ const SignUp = ({ history }) => {
     e.preventDefault();
     firebase.auth().createUserWithEmailAndPassword(email, password)
       .then(({ user }) => {
-        history.push('/')
+        history.push('/');
         // console.log(user)
         user.updateProfile({
           displayName: name
-        })
+        });
       })
       .catch(error => {
         if (error.code === 'auth/email-already-in-use') {
           // alert('このメールアドレスは他のアカウントで使用されています。')
-          document.getElementById('signEmailEr').textContent = 'このメールアドレスは他のアカウントで使用されています。'
+          setEmailError('このメールアドレスは他のアカウントで使用されています。');
         } else if (error.code === 'auth/weak-password') {
           // alert('パスワードは6文字以上です。')
-          document.getElementById('signPasswordEr').textContent = 'パスワードは6文字以上です。'
+          setPasswordError('パスワードは6文字以上です。');
         }
         // console.log(error)
       });
-  }
+  };
 
   return (
     <>
@@ -50,12 +52,12 @@ const SignUp = ({ history }) => {
         <div>
           <Lavel htmlFor="email">e-mail</Lavel>
           <Input type="email" id="email" name="email" placeholder="email" required onChange={(e) => { setEmail(e.target.value) }} />
-          <p id='signEmailEr'></p>
+          <p>{emailError}</p>
         </div>
         <div>
           <Lavel htmlFor="password">password</Lavel>
           <Input type="password" id="password" name="password" placeholder="password" required onChange={(e) => { setPassword(e.target.value) }} />
-          <p id='signPasswordEr'></p>
+          <p>{passwordError}</p>
         </div>
         <div>
           <Lavel htmlFor="yourName">name</Lavel>
@@ -69,4 +71,4 @@ const SignUp = ({ history }) => {
   )
 }
 
-export default SignUp
+export default SignUp;
